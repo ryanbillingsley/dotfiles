@@ -114,7 +114,7 @@ let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_enable_elixir_checker = 1
 
 " CrtlP
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build'
 
 " Over.VIM
 
