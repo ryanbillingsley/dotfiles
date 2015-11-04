@@ -1,0 +1,132 @@
+if !1 | finish | endif
+
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'ervandew/supertab'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'mustache/vim-mustache-handlebars'
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle '29decibel/codeschool-vim-theme'
+NeoBundle 'noah/vim256-color'
+NeoBundle 'ScrollColors'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'rstacruz/sparkup'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'suan/vim-instant-markdown'
+NeoBundle 'elixir-lang/vim-elixir'
+
+call neobundle#end()
+
+filetype plugin indent on
+
+NeoBundleCheck
+
+let mapleader = ","
+
+set nocompatible                " choose no compatibility with legacy vi
+syntax enable
+set encoding=utf-8
+set showcmd                     " display incomplete commands
+set clipboard=unnamed
+
+"" Whitespace
+set nowrap                      " don't wrap lines
+set tabstop=2 shiftwidth=2      " a tab is two spaces (or set this to 4)
+set expandtab                   " use spaces, not tabs (optional)
+set backspace=indent,eol,start  " backspace through everything in insert mode
+
+"" Searching
+set hlsearch                    " highlight matches
+set incsearch                   " incremental searching
+set ignorecase                  " searches are case insensitive...
+set smartcase                   " ... unless they contain at least one capital let
+set laststatus=2
+
+colorscheme gruvbox
+
+set relativenumber
+set number
+:set colorcolumn=80
+:set smartindent
+:set expandtab
+
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+
+:imap jj <Esc>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-n> :bn<cr>
+nnoremap <C-N> :bp<cr>
+map <Leader>w :w<cr>
+map <Leader>d :bd<cr>
+nnoremap <Leader>q :tabclose<CR>
+nnoremap <Leader>fw :FixWhitespace<CR>
+
+" Highlight line when in insert mode
+:autocmd InsertEnter * set cul
+:autocmd InsertLeave * set nocul
+
+" Airline
+let g:airline_powerline_fonts = 1
+let g:airline_theme='luna'
+let g:airline#extensions#tabline#enabled = 1
+set ttimeoutlen=50
+
+" NERDTree
+let g:NERDTreeWinPos = "right"
+map <Leader>n :NERDTreeToggle<CR>
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_auto_loc_list = 2
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_elixir_checkers = ['elixir']
+let g:syntastic_enable_elixir_checker = 1
+
+" CrtlP
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps'
+
+" Over.VIM
+
+function! VisualFindAndReplace()
+  :OverCommandLine %s/
+  :w
+endfunction
+
+function! VisualFindAndReplaceWithSelection() range
+  :'<,'>OverCommandLine s/
+  :w
+endfunction
+
+nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
+xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
