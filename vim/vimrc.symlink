@@ -12,6 +12,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'OrangeT/vim-csharp'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'kien/ctrlp.vim'
@@ -28,13 +29,20 @@ NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'rstacruz/sparkup'
+NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-endwise'
-NeoBundle 'suan/vim-instant-markdown'
 NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'omnisharp/omnisharp-vim'
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'kshenoy/vim-signature'
+NeoBundle 'trevordmiller/nova-vim'
+NeoBundle 'nessss/vim-gml'
+NeoBundle 'lambdatoast/elm.vim'
+NeoBundle 'jplaut/vim-arduino-ino'
 
 call neobundle#end()
 
@@ -86,6 +94,17 @@ map <Leader>w :w<cr>
 map <Leader>d :bd<cr>
 nnoremap <Leader>q :tabclose<CR>
 nnoremap <Leader>fw :FixWhitespace<CR>
+nnoremap <Leader>cc :cclose<CR>
+nnoremap <Leader>co :copen<CR>
+
+set backupdir=~/.vim/_backup//
+set directory=~/.vim/_temp//
+
+" allow undo history to persist after closing buffer
+if has('persistent_undo')
+  set undodir=~/.vim/_undo
+  set undofile
+end
 
 " Highlight line when in insert mode
 :autocmd InsertEnter * set cul
@@ -110,11 +129,12 @@ let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_enable_elixir_checker = 1
 
 " CrtlP
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build\|.*\.meta'
 
 " Over.VIM
 
@@ -130,3 +150,35 @@ endfunction
 
 nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
 xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
+
+let NERDTreeIgnore = ['\.meta$']
+
+" OmniSharp
+set completeopt=longest,menuone
+
+augroup omnisharp_commands
+    autocmd!
+
+    autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
+    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+
+    "The following commands are contextual, based on the current cursor position.
+
+    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
+    autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
+    autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
+    autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
+    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+    "finds members in the current buffer
+    autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
+    " cursor can be anywhere on the line containing an issue
+    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
+    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+    autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
+    autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
+augroup END
+
+" Elm
+nnoremap <leader>el :ElmEvalLine<CR>
+vnoremap <leader>es :<C-u>ElmEvalSelection<CR>
+nnoremap <leader>em :ElmMakeCurrentFile<CR>
