@@ -37,13 +37,16 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'elixir-lang/vim-elixir'
-NeoBundle 'omnisharp/omnisharp-vim'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'trevordmiller/nova-vim'
 NeoBundle 'nessss/vim-gml'
 NeoBundle 'lambdatoast/elm.vim'
 NeoBundle 'jplaut/vim-arduino-ino'
+NeoBundle 'morhetz/gruvbox'
+NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'mxw/vim-jsx'
 
 call neobundle#end()
 
@@ -76,7 +79,7 @@ colorscheme gruvbox
 
 set relativenumber
 set number
-:set colorcolumn=80
+:set colorcolumn=100
 :set smartindent
 :set expandtab
 
@@ -85,10 +88,10 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 
 :imap jj <Esc>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-L> <C-W><C-L>
 nnoremap <C-n> :bn<cr>
 nnoremap <C-N> :bp<cr>
 map <Leader>w :w<cr>
@@ -106,7 +109,7 @@ if has('persistent_undo')
   set undodir=~/.vim/_undo
   set undofile
 end
-
+:
 " Highlight line when in insert mode
 :autocmd InsertEnter * set cul
 :autocmd InsertLeave * set nocul
@@ -119,7 +122,8 @@ set ttimeoutlen=50
 
 " NERDTree
 let g:NERDTreeWinPos = "right"
-map <Leader>n :NERDTreeToggle<CR>
+map <Leader>n :NERDTree<CR>
+map <Leader><Leader>n :NERDTreeToggle<CR>
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -153,31 +157,6 @@ nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
 xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
 
 let NERDTreeIgnore = ['\.meta$']
-
-" OmniSharp
-set completeopt=longest,menuone
-
-augroup omnisharp_commands
-    autocmd!
-
-    autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
-    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
-
-    "The following commands are contextual, based on the current cursor position.
-
-    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
-    autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-    autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
-    autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    "finds members in the current buffer
-    autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
-    " cursor can be anywhere on the line containing an issue
-    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
-    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
-    autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-augroup END
 
 " Elm
 nnoremap <leader>el :ElmEvalLine<CR>
