@@ -1,1 +1,0 @@
-function on() { noglob curl -X POST --data-urlencode "task=$*" https://api.workingon.co/hooks/incoming?token=e6d815ed2c3bf541deb50672fc38722e4cbac11ba057ca45d10096e671ea89e3 >/dev/null 2>&1 echo "Task sent." }
