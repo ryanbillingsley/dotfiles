@@ -47,6 +47,7 @@ NeoBundle 'morhetz/gruvbox'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mxw/vim-jsx'
+NeoBundle 'mileszs/ack.vim'
 
 call neobundle#end()
 
@@ -77,7 +78,7 @@ set laststatus=2
 
 colorscheme gruvbox
 
-set relativenumber
+" set relativenumber
 set number
 :set colorcolumn=100
 :set smartindent
@@ -88,10 +89,6 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 
 :imap jj <Esc>
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-H> <C-W><C-H>
-" nnoremap <C-L> <C-W><C-L>
 nnoremap <C-n> :bn<cr>
 nnoremap <C-N> :bp<cr>
 map <Leader>w :w<cr>
@@ -137,6 +134,22 @@ let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_enable_elixir_checker = 1
+
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ackprg='ag --vimgrep'
+
+  " Use ag in CtrlP for listing files. Fast and respects .gitignore
+  let g:ctrlp_user_comment = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+
+  " bind \ to grep shortcut
+  command -nargs=+ -complete=file -bar Ag silent! <args>|cwindow|redraw!
+  nnoremap \ :Ag<SPACE>
+endif
 
 " CrtlP
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build\|.*\.meta'
