@@ -1,59 +1,39 @@
 if !1 | finish | endif
 
-if has('vim_starting')
-  if &compatible
-    set nocompatible               " Be iMproved
-  endif
-
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'OrangeT/vim-csharp'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'ervandew/supertab'
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'mustache/vim-mustache-handlebars'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle '29decibel/codeschool-vim-theme'
-NeoBundle 'noah/vim256-color'
-NeoBundle 'ScrollColors'
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'rstacruz/sparkup'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'elixir-lang/vim-elixir'
-NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'trevordmiller/nova-vim'
-NeoBundle 'nessss/vim-gml'
-NeoBundle 'lambdatoast/elm.vim'
-NeoBundle 'jplaut/vim-arduino-ino'
-NeoBundle 'morhetz/gruvbox'
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'mxw/vim-jsx'
-NeoBundle 'mileszs/ack.vim'
-
-call neobundle#end()
-
-filetype plugin indent on
-
-NeoBundleCheck
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'pangloss/vim-javascript'
+Plug 'nanotech/jellybeans.vim'
+Plug '29decibel/codeschool-vim-theme'
+Plug 'noah/vim256-color'
+Plug 'osyo-manga/vim-over'
+Plug 'tpope/vim-fugitive'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'rstacruz/sparkup'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+Plug 'elixir-lang/vim-elixir'
+Plug 'Valloric/YouCompleteMe'
+Plug 'kshenoy/vim-signature'
+Plug 'trevordmiller/nova-vim'
+Plug 'morhetz/gruvbox'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'mileszs/ack.vim'
+Plug 'w0rp/ale'
+call plug#end()
 
 let mapleader = ","
 
@@ -62,6 +42,8 @@ syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 set clipboard=unnamed
+set timeoutlen=1000
+set ttimeoutlen=0
 
 "" Whitespace
 set nowrap                      " don't wrap lines
@@ -77,18 +59,21 @@ set smartcase                   " ... unless they contain at least one capital l
 set laststatus=2
 
 colorscheme gruvbox
-
-" set relativenumber
+set background=dark
+set relativenumber
 set number
 :set colorcolumn=100
 :set smartindent
 :set expandtab
 
+set guioptions=
+set guifont=Source\ Code\ Pro\ for\ Powerline:h16
+
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
-
-:imap jj <Esc>
+ 
+:inoremap jj <Esc>
 nnoremap <C-n> :bn<cr>
 nnoremap <C-N> :bp<cr>
 map <Leader>w :w<cr>
@@ -115,25 +100,10 @@ end
 let g:airline_powerline_fonts = 1
 let g:airline_theme='luna'
 let g:airline#extensions#tabline#enabled = 1
-set ttimeoutlen=50
 
 " NERDTree
 let g:NERDTreeWinPos = "right"
-map <Leader>n :NERDTree<CR>
-map <Leader><Leader>n :NERDTreeToggle<CR>
-
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_elixir_checkers = ['elixir']
-let g:syntastic_enable_elixir_checker = 1
+map <Leader>n :NERDTreeToggle<CR>
 
 if executable('ag')
   " Use ag over grep
@@ -152,7 +122,20 @@ if executable('ag')
 endif
 
 " CrtlP
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build\|.*\.meta'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp\|bower_components\|deps\|_build\|docs\|.*\.meta'
+
+"" Syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_auto_loc_list = 2
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_elixir_checkers = ['elixir']
+" let g:syntastic_enable_elixir_checker = 1
 
 " Over.VIM
 
@@ -171,7 +154,13 @@ xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
 
 let NERDTreeIgnore = ['\.meta$']
 
-" Elm
-nnoremap <leader>el :ElmEvalLine<CR>
-vnoremap <leader>es :<C-u>ElmEvalSelection<CR>
-nnoremap <leader>em :ElmMakeCurrentFile<CR>
+let g:mix_format_on_save = 1
+let g:mix_format_silent_errors = 1
+
+let g:ale_fixers = {}
+let g:ale_javascript_prettier_options = '--no-semi'
+let g:ale_fixers['javascript'] = ['prettier', 'eslint']
+let g:ale_fixers['ruby'] = ['rubocop']
+let g:ale_fixers['elixir'] = ['mix_format']
+
+let g:ale_fix_on_save = 1

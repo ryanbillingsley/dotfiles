@@ -31,5 +31,6 @@ bind-key z resize-pane -Z
 # Don't prompt to kill panes/windows.
 bind-key x kill-pane
 bind-key & kill-window
+bind-key ^ split-window
 
 run '~/.tmux/plugins/tpm/tpm'
