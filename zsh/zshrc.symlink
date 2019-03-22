@@ -11,7 +11,7 @@ plugins=(git)
 
 # User configuration
 
-export PATH="./bin:/Users/ryanbillingsley/.dotfiles/bin:/usr/local/var/rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin"
+export PATH="./bin:/Users/ryanbillingsley/.dotfiles/bin:/usr/local/var/rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet/"
 export DEVHOME="/Users/ryanbillingsley/code"
 
 source $ZSH/oh-my-zsh.sh
@@ -19,3 +19,7 @@ source $ZSH/oh-my-zsh.sh
 [ -s "/Users/ryanbillingsley/.dnx/dnvm/dnvm.sh" ] && . "/Users/ryanbillingsley/.dnx/dnvm/dnvm.sh" # Load dnvm
 
 eval "$(rbenv init -)"
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash

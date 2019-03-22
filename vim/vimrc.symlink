@@ -42,6 +42,7 @@ syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 set clipboard=unnamed
+set notimeout
 set timeoutlen=1000
 set ttimeoutlen=0
 
@@ -67,7 +68,8 @@ set number
 :set expandtab
 
 set guioptions=
-set guifont=Source\ Code\ Pro\ for\ Powerline:h16
+set guifont=SourceCodeProForPowerline-Medium:h16
+
 
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -82,6 +84,7 @@ nnoremap <Leader>q :tabclose<CR>
 nnoremap <Leader>fw :FixWhitespace<CR>
 nnoremap <Leader>cc :cclose<CR>
 nnoremap <Leader>co :copen<CR>
+nnoremap <Leader>gw :Gwrite<CR>
 
 set backupdir=~/.vim/_backup//
 set directory=~/.vim/_temp//
@@ -154,8 +157,8 @@ xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
 
 let NERDTreeIgnore = ['\.meta$']
 
-let g:mix_format_on_save = 1
-let g:mix_format_silent_errors = 1
+" let g:mix_format_on_save = 1
+" let g:mix_format_silent_errors = 1
 
 let g:ale_fixers = {}
 let g:ale_javascript_prettier_options = '--no-semi'
